@@ -22,8 +22,8 @@ def get_leagues():
             leagues.append(a[0]['href'])
     return leagues
 
-def get_seasons():
-    link = mainLink + "/premier-league-results"
+def get_seasons(league):
+    link = mainLink + league +"-results"
     gelenVeri = soup(link) 
     gelenVeri = gelenVeri.find_all('div', attrs={'class': 'section-nav__body'})
     gelenVeri = gelenVeri[0].find_all('ul', attrs={'class': 'section-nav__group'})
@@ -53,21 +53,25 @@ def get_matches(season):
     #ilk 200
     ilk200 = gelenVeri[0].find_all('div', attrs={'class': 'fixres__item'})
     for i in ilk200:
-        satir = i.find_all('a', href=True)
-        link = satir[0]['href']
-        link = push_stats(link)
-        matches.append(link)
+        a = i.find_all('a', href=True)
+        href = a[0]['href']
+        href = push_stats(href)
+        matches.append(href)
     
     #son 180
-    gelenVeri = gelenVeri[0].find_all('script', attrs={'type': 'text/show-more'})[0].text
-    gelenVeri = BeautifulSoup(gelenVeri, "html.parser")
-    gelenVeri = gelenVeri.find_all('div', attrs={'class': 'fixres__item'})
-    
-    for i in gelenVeri:
-        satir = i.find_all('a', href=True)
-        link = satir[0]['href']
-        link = push_stats(link)
-        matches.append(link)
+    try:
+        script = gelenVeri[0].find_all('script', attrs={'type': 'text/show-more'})[0].text
+        script = BeautifulSoup(script, "html.parser")
+        script = script.find_all('div', attrs={'class': 'fixres__item'})
+        
+        for i in script:
+            a = i.find_all('a', href=True)
+            href = a[0]['href']
+            href = push_stats(href)
+            matches.append(href)
+
+    except:
+        print("Last 180 is not exist...")
 
     return matches
 
@@ -140,7 +144,7 @@ def write_json(season):
             json.dump(stats, outfile)
 
 def main():
-    print("Welcome to SkySports Puller v1.0.0")
+    print("Welcome to SkySports Puller v0.0.1")
     print("Loading leagues, please wait...\n")
     leagues = get_leagues()
     for idx, item in enumerate(leagues):
@@ -153,13 +157,12 @@ def main():
         except ValueError:
             print ("Please enter a numeric value!")
 
-    sleagues[int(index)])
+    league = leagues[int(index)]
 
-    # print("Hello, World!")
-    # seasons = get_seasons()
-    # for i in range(0,9):
-    #write_json("/premier-league-results/2018-19")
-        
+    seasons = get_seasons(league)
+    for i in range(0,9):
+        print("Getting matches of " + seasons[i])
+        write_json(seasons[i])
     
 if __name__ == '__main__':
     main()
