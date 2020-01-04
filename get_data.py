@@ -2,6 +2,8 @@ from bs4 import BeautifulSoup
 import requests
 import json
 import pprint
+import os
+from datetime import datetime
 
 mainLink = "https://www.skysports.com"
 
@@ -83,10 +85,10 @@ def make_column_name(name):
 
 def get_stats(link):
     _dict = {}
-    hamVeri = soup(link)
+    rawData = soup(link)
 
     #MATCH DETAILS
-    match_details = hamVeri.find_all("div",attrs={"class":"match-head__fixture-side match-head__fixture-side--wide-score"})
+    match_details = rawData.find_all("div",attrs={"class":"match-head__fixture-side match-head__fixture-side--wide-score"})
 
     for idx, item in enumerate(match_details):
         team_name = item.find_all("abbr",attrs={"class":"swap-text--bp10"})[0]["title"]
@@ -96,11 +98,11 @@ def get_stats(link):
             _dict["team_name_home"] = team_name
             _dict["team_score_home"] = team_score
         if idx == 1:
-            _dict["team_away"] = team_name
+            _dict["team_name_away"] = team_name
             _dict["team_score_away"] = team_score
 
     #STATISTICS
-    match_stats = hamVeri.find_all("div",attrs={"class":"match-stats callfn"})
+    match_stats = rawData.find_all("div",attrs={"class":"match-stats callfn"})
     match_stats_item = match_stats[0].find_all("div",attrs={"class":"match-stats__item"})
     for idx, item in enumerate(match_stats_item):
         column_name = item.find_all("h5",attrs={"class":"match-stats__name"})
@@ -127,22 +129,55 @@ def get_stats(link):
     pprint.sorted = lambda x, key=None: x
 
     return _dict
-
-def write_json(season):
+    
+def write_json(season, league):
     print("Getting matches...")
     matches = get_matches(season)
     stats = []
 
-    for idx, item in enumerate(matches):
-        stats.append(get_stats(item))
-        print("{0}/{1} => {2}".format(idx,len(matches),item))
-    
-    season = season.replace('/','_')
-    json_name = season+'.json'
-    print("Creating {0}".format(season))
-    with open(json_name, 'w') as outfile:
-            json.dump(stats, outfile)
+    seasonPath = season.replace('/','_')
+    filePath = "json/" + league.replace('/','') + '/'
+    json_name = filePath + seasonPath + '.json'
 
+    if not os.path.exists(filePath): 
+        os.makedirs(filePath)
+        
+    if not os.path.exists(json_name):
+        for idx, item in enumerate(matches):
+            print("{0}/{1} => {2}".format(idx,len(matches),item))
+            try:
+                stats.append(get_stats(item))
+            except:
+                print("Can not pull datas of " + item)
+                data = []
+                if os.path.exists("logs.json"):
+                    with open("logs.json", "r") as jsonFile:
+                        data = json.load(jsonFile)
+                
+                try:
+                    err_id = int(data[-1]["id"]) + 1
+                except:
+                    err_id = 0
+
+                log = {
+                    "id": err_id, 
+                    "type": "error",
+                    "time": str(datetime.now()),
+                    "league": league,
+                    "season": season,
+                    "file": json_name,
+                    "link": item
+                }
+                data.append(log)
+                with open("logs.json", "w") as jsonFile:
+                    json.dump(data, jsonFile)
+
+        print("Creating {0}".format(seasonPath))
+        with open(json_name, 'w') as outfile:
+                json.dump(stats, outfile, ensure_ascii=False, indent=4)
+    else:
+        print("Already exist. Missing " + json_name)
+    
 def main():
     print("Welcome to SkySports Puller v0.0.1")
     print("Loading leagues, please wait...\n")
@@ -158,11 +193,11 @@ def main():
             print ("Please enter a numeric value!")
 
     league = leagues[int(index)]
-
     seasons = get_seasons(league)
+
     for i in range(0,9):
         print("Getting matches of " + seasons[i])
-        write_json(seasons[i])
+        write_json(seasons[i], league)
     
 if __name__ == '__main__':
     main()
