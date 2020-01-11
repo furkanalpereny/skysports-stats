@@ -119,11 +119,11 @@ def get_stats(link):
 
     #MATCH RESULT
     if _dict["team_score_home"] > _dict["team_score_away"]:
-        _dict["match_result"] = 1
+        _dict["match_result"] = "1"
     elif _dict["team_score_home"] < _dict["team_score_away"]:
-        _dict["match_result"] = 2
+        _dict["match_result"] = "2"
     else:
-        _dict["match_result"] = 0
+        _dict["match_result"] = "0"
 
 
     pprint.sorted = lambda x, key=None: x
