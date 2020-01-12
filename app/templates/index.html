@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script
+      src="https://use.fontawesome.com/releases/v5.12.0/js/all.js"
+      data-auto-a11y="true"
+    ></script>
+
+  <title>SkySports Collector version 1.0</title>
+</head>
+
+<body>
+  <main role="main">
+    <div class="jumbotron">
+      <div class="container">
+        <h1 class="display-3">SkySports Collector</h1>
+        <h3 style="text-align: right;">version 1.0</h3>
+
+      </div>
+    </div>
+    <div class="container">
+      <ul class="list-group list-group-flush">
+        {%for i in paths%}
+        <li class="list-group-item d-flex justify-content-between align-items-center" data-toggle="collapse"
+          data-target="#{{i['main_folder'].replace('/','')}}" aria-controls="{{i['main_folder'].replace('/','')}}">
+          {{i['main_folder']}}
+          <span class="badge badge-primary badge-pill">Includes {{i['edge_files']|length}} seasons</span>
+        </li>
+  
+        <div class="collapse multi-collapse" id="{{i['main_folder']}}">
+          <div class="container">
+            <ul class="list-group list-group-flush">
+              {%for j in i['edge_files']%}
+              <li class="list-group-item">
+                <div class="container">
+                  <div class="row">
+                    <div class="col-md-8">
+                      {{j.replace('.json','')}}
+                    </div>
+                    <div class="col-md-4" style="text-align: center;">
+                      <a href="/json/{{i['main_folder']}}/{{j}}">.json</a>
+                      <a href="/xlsx/{{i['main_folder']}}/{{j}}">.xlsx</a href="">
+                      <a href="/csv/{{i['main_folder']}}/{{j}}">.csv</a href="">
+                    </div>
+                  </div>
+                </div>
+              </li>
+              {%endfor%}
+            </ul>
+          </div>
+        </div>
+        {%endfor%}
+      </ul>
+    </div>
+  </main>
+  
+<style>
+a{
+  color: #3f5771;;
+}
+</style>
+
+  <footer class="jumbotron" style="text-align: center; margin-top: 0rem; margin-bottom: 0rem;padding: 1rem 0.5rem;">
+    <p>
+      <h6 style="padding-top: 2rem;">Made with <span style="color: #e25555;">&hearts;</span> by <kbd style="position: initial; background-color: #3f5771;">furkanalperenyildirim</kbd> in Konya (2019)</h6>
+      <div style="margin-top: 2rem;margin-bottom: 2rem;">
+        <!--Facebook-->
+        <a class="fb-ic mr-3" role="button" href="https://www.facebook.com/furkanalpereny.ce><i class="fab fa-lg fa-facebook-f"></i></a>
+        <!--Twitter-->
+        <a class="tw-ic mr-3" role="button" href="https://twitter.com/muschkulpesend"><i class="fab fa-lg fa-twitter"></i></a>
+        <!--Linkedin-->
+        <a class="li-ic mr-3" role="button" href="https://www.linkedin.com/in/furkan-alperen-y%C4%B1ld%C4%B1r%C4%B1m-26a149155/"><i class="fab fa-lg fa-linkedin-in"></i></a>
+        <!--Instagram-->
+        <a class="ins-ic mr-3" role="button" href="https://www.instagram.com/furkanalperenyildirim/"><i class="fab fa-lg fa-instagram"></i></a>
+        <!--Youtube-->
+        <a class="yt-ic mr-3" role="button" href="https://www.youtube.com/user/clicktomybrother"><i class="fab fa-lg fa-youtube"></i></a>
+        <!--Github-->
+        <a class="git-ic mr-3" role="button" href="https://github.com/furkanalpereny"><i class="fab fa-lg fa-github"></i></a>
+      </div>
+    </p>
+  </footer>
+
+  <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+    integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+    integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+    crossorigin="anonymous"></script>
+</body>
+
+</html>
