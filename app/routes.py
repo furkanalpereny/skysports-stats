@@ -31,3 +31,7 @@ def download_csv(filename):
     path = uploads+"/"+filename
     path = get_data.json_to_csv(path)
     return send_file(path, as_attachment=True)
+
+@app.route('/favicon.ico', methods=['GET', 'POST'])
+def favicon():
+    return  "favicon.ico"
