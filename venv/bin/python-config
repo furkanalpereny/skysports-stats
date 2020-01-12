@@ -1,4 +1,4 @@
-#!/home/muschkulpesend/Documents/Projects/skysports-stats/venv/bin/python
+#!/home/muschkulpesend/Documents/Github Repostories/skysports-stats/venv/bin/python
 
 import sys
 import getopt

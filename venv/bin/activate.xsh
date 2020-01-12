@@ -28,7 +28,7 @@ def _deactivate(args):
 _deactivate(["nondestructive"])
 aliases["deactivate"] = _deactivate
 
-$VIRTUAL_ENV = r"/home/muschkulpesend/Documents/Projects/skysports-stats/venv"
+$VIRTUAL_ENV = r"/home/muschkulpesend/Documents/Github Repostories/skysports-stats/venv"
 
 $_OLD_VIRTUAL_PATH = $PATH
 $PATH = $PATH[:]

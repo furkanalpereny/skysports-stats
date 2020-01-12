@@ -46,7 +46,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="/home/muschkulpesend/Documents/Projects/skysports-stats/venv"
+VIRTUAL_ENV="/home/muschkulpesend/Documents/Github Repostories/skysports-stats/venv"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"

@@ -1,4 +1,6 @@
-#!/home/muschkulpesend/Documents/Projects/skysports-stats/venv/bin/python3
+#!/bin/sh
+'''exec' "/home/muschkulpesend/Documents/Github Repostories/skysports-stats/venv/bin/python3" "$0" "$@"
+' '''
 # -*- coding: utf-8 -*-
 import re
 import sys
